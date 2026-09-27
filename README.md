@@ -1,9 +1,47 @@
-# AWS Cloud Deployment Project — Secure Flask Web Application
+![header](https://capsule-render.vercel.app/api?type=waving&color=0:1e3c72,100:2a5298&height=200&section=header&text=Student%20Registration%20on%20AWS&fontSize=42&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Secure%20Flask%20%2B%20Gunicorn%20%2B%20EC2%20%2B%20RDS%20%2B%20S3&descAlignY=58&descSize=18)
+
+<div align="center">
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=2A5298&center=true&vCenter=true&width=700&lines=IAM+Role-based+S3+Access+%E2%80%94+No+Access+Keys;Private+RDS+MySQL+%2B+Network+Isolation;Pre-signed+URLs+%E2%80%94+Nothing+Public;Parameterized+SQL+%E2%80%A2+Validated+Uploads)](https://git.io/typing-svg)
+
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3-000000?style=for-the-badge&logo=flask&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-EC2%20%7C%20RDS%20%7C%20S3-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
+![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge)
+![Security](https://img.shields.io/badge/Secrets-Zero%20Hardcoded-success?style=for-the-badge&logo=shieldsdotio&logoColor=white)
+
+</div>
 
 A student registration web application demonstrating a secure, production-style
 AWS deployment: Flask + Gunicorn on EC2, private RDS MySQL, S3 photo storage
 accessed via an IAM instance role (no access keys), and network isolation
 between public and private subnets.
+
+## Table of Contents
+
+1. [Project Overview](#1-project-overview)
+2. [Architecture](#2-architecture)
+3. [Technologies](#3-technologies)
+4. [AWS Components](#4-aws-components)
+5. [Directory Structure](#5-directory-structure)
+6. [Local Setup](#6-local-setup)
+7. [AWS Setup](#7-aws-setup)
+8. [VPC Configuration](#8-vpc-configuration)
+9. [Security Groups](#9-security-groups)
+10. [IAM](#10-iam)
+11. [S3](#11-s3)
+12. [RDS](#12-rds)
+13. [EC2](#13-ec2)
+14. [Environment Variables](#14-environment-variables)
+15. [Deployment](#15-deployment)
+16. [Testing](#16-testing)
+17. [Security Validation](#17-security-validation)
+18. [Troubleshooting](#18-troubleshooting)
+19. [Cleanup](#19-cleanup)
+20. [Project Limitations](#20-project-limitations)
+21. [Future Improvements](#21-future-improvements)
+22. [License](#license)
 
 ## 1. Project Overview
 
@@ -77,6 +115,7 @@ flask/
 ├── .env.example
 ├── .gitignore
 ├── README.md
+├── LICENSE
 ├── schema.sql               MySQL schema (studentdb.students)
 ├── deploy/
 │   ├── flaskapp.service     systemd unit (Gunicorn)
@@ -102,8 +141,8 @@ flask/
 ## 6. Local Setup
 
 ```bash
-git clone <REPLACE_ME_your_repo_url>
-cd flask
+git clone https://github.com/aishwaryajimmy123/student-registration-using-aws-.git
+cd student-registration-using-aws-
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
@@ -257,6 +296,18 @@ handling of an S3 failure. No AWS account or live database is required. See
 
 ## 17. Security Validation
 
+An audit of every tracked file confirmed:
+
+| Check | Result |
+|---|---|
+| Hardcoded AWS access keys / secret keys | None found |
+| Hardcoded DB passwords or app secrets | None found |
+| S3 access method | EC2 IAM instance role only (no static keys) |
+| SQL queries | Fully parameterized (no injection surface) |
+| File uploads | UUID-renamed, extension + MIME allowlisted |
+| `.gitignore` coverage | `.env`, `*.pem`, `*.key`, `terraform/*.tfvars` all excluded |
+| Debug mode / unsafe template rendering | Not present |
+
 See the manual checklist in [docs/SECURITY.md](docs/SECURITY.md) and
 [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md).
 
@@ -322,3 +373,9 @@ verify manually in the console.
     v
 [RDS MySQL 8.x: studentdb.students]
 ```
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+![footer](https://capsule-render.vercel.app/api?type=waving&color=0:2a5298,100:1e3c72&height=100&section=footer)
