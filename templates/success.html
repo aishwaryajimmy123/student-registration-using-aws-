@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Registration Successful{% endblock %}
+{% block content %}
+  <section class="card success-card">
+    <h2>Registration Successful</h2>
+    <p>Thank you, <strong>{{ name }}</strong>! You have been registered for <strong>{{ course }}</strong>.</p>
+
+    {% if photo_url %}
+      <div class="photo-preview">
+        <img src="{{ photo_url }}" alt="Uploaded photo preview">
+        <p class="hint">This preview link is temporary and will expire.</p>
+      </div>
+    {% else %}
+      <p class="hint">Your photo was uploaded, but a preview link is not available right now.</p>
+    {% endif %}
+
+    <a class="btn-primary" href="{{ url_for('index') }}">Register Another Student</a>
+  </section>
+{% endblock %}

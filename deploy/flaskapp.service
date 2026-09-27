@@ -1,0 +1,42 @@
+# systemd unit for the Flask/Gunicorn student registration app.
+#
+# Install:
+#   sudo cp deploy/flaskapp.service /etc/systemd/system/flaskapp.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now flaskapp
+#
+# Secrets are NOT hardcoded here. EnvironmentFile points to a restricted
+# file (e.g. /etc/flaskapp/flaskapp.env, mode 600, owned by the app user)
+# containing the same variables as .env.example with real values filled in.
+# That file is created manually on the EC2 instance and is never committed
+# to git.
+#
+# Gunicorn binds directly to port 80 (the base architecture in the spec has
+# no reverse proxy). Binding a non-root process to a privileged port (<1024)
+# requires one of:
+#   sudo setcap 'cap_net_bind_service=+ep' /opt/flaskapp/venv/bin/python3.x
+# Run this once after creating the virtualenv (see docs/DEPLOYMENT.md).
+# If you instead add Nginx (see deploy/nginx.conf, optional enhancement),
+# change ExecStart below to bind 127.0.0.1:8000 and let Nginx listen on :80.
+
+[Unit]
+Description=Flask Student Registration App (Gunicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=flaskapp
+Group=flaskapp
+WorkingDirectory=/opt/flaskapp
+EnvironmentFile=/etc/flaskapp/flaskapp.env
+ExecStart=/opt/flaskapp/venv/bin/gunicorn --workers 3 --bind 0.0.0.0:80 app:app
+Restart=on-failure
+RestartSec=5
+
+# Hardening (safe defaults for a non-root service user)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

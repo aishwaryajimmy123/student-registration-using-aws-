@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Register &mdash; Student Registration Portal{% endblock %}
+{% block content %}
+  <section class="card">
+    <h2>New Student Registration</h2>
+    <p class="subtitle">Fill in your details and upload a photo to complete registration.</p>
+
+    {% if server_error %}
+      <div class="flash flash-error">Something went wrong. Please try again later.</div>
+    {% endif %}
+
+    <form action="{{ url_for('register') }}" method="post" enctype="multipart/form-data" novalidate>
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" maxlength="100" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" maxlength="150" required>
+      </div>
+
+      <div class="form-group">
+        <label for="course">Course</label>
+        <input type="text" id="course" name="course" maxlength="100" required>
+      </div>
+
+      <div class="form-group">
+        <label for="photo">Photo (PNG, JPG, or GIF &mdash; max 5&nbsp;MB)</label>
+        <input type="file" id="photo" name="photo" accept="image/png,image/jpeg,image/gif" required>
+      </div>
+
+      <button type="submit" class="btn-primary">Submit Registration</button>
+    </form>
+  </section>
+{% endblock %}
